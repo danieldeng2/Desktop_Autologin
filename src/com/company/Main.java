@@ -7,7 +7,6 @@ import com.gargoylesoftware.htmlunit.html.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,16 +55,13 @@ public class Main {
 
             System.out.println("Signing in...");
 
+
             HtmlPage page = webClient.getPage("https://192.168.64.1:10443/auth1.html");
-            List<HtmlForm> forms = page.getForms();
-            HtmlForm htmlForm = forms.get(0);
-            HtmlSubmitInput button = htmlForm.getInputByName("Submit");
-            HtmlTextInput UserName = htmlForm.getInputByName("userName");
-            UserName.setText(username);
-            HtmlPasswordInput PassWord = htmlForm.getInputByName("pwd");
-            PassWord.setText(password);
-            button.click();
-            webClient.waitForBackgroundJavaScript(5000);
+            page.executeJavaScript("javascript:" +
+                    "document.getElementById('userName').value = '" + username + "';"+
+                    "document.getElementsByName('pwd')[0].value = '" + password + "';"+
+                    "document.getElementsByName('Submit')[0].click();");
+            webClient.waitForBackgroundJavaScript(1000);
 
             page = webClient.getPage("http://192.168.64.1/dynUserLogin.html?loginDone=1");
             System.out.println(page.asText());
