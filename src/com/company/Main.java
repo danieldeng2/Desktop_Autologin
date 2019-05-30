@@ -56,14 +56,14 @@ public class Main {
             System.out.println("Signing in...");
 
 
-            HtmlPage page = webClient.getPage("https://192.168.64.1:10443/auth1.html");
+            HtmlPage page = webClient.getPage("https://192.168.64.1/auth1.html");
             page.executeJavaScript("javascript:" +
                     "document.getElementById('userName').value = '" + username + "';"+
                     "document.getElementsByName('pwd')[0].value = '" + password + "';"+
                     "document.getElementsByName('Submit')[0].click();");
             webClient.waitForBackgroundJavaScript(1000);
 
-            page = webClient.getPage("http://192.168.64.1/dynUserLogin.html?loginDone=1");
+            page = webClient.getPage("https://192.168.64.1/dynUserLogin.html?loginDone=1");
             System.out.println(page.asText());
             webClient.close();
 
